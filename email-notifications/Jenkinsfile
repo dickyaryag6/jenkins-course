@@ -2,9 +2,8 @@ node {
 
   // config 
   def to = emailextrecipients([
-          [$class: 'CulpritsRecipientProvider'],
-          [$class: 'DevelopersRecipientProvider'],
-          [$class: 'RequesterRecipientProvider']
+         developers(),
+         requestor()
   ])
 
   // job
@@ -26,7 +25,7 @@ node {
     // send email
     if(to != null && !to.isEmpty()) {
       emailext(body: content, mimeType: 'text/html',
-         replyTo: '$DEFAULT_REPLYTO', subject: subject,
+         subject: subject,
          to: to, attachLog: true )
     }
 
