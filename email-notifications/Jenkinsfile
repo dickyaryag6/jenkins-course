@@ -10,20 +10,20 @@ node {
     }
     stage('post-build') {
       
-      SendEmailNotification()
+      SendEmailNotification("SUCCESSFUL")
     }
   } catch(e) {
     // mark build as failed
     currentBuild.result = "FAILURE";
    
-    SendEmailNotification()
+    SendEmailNotification(currentBuild.result)
 
     // mark current build as a failure and throw the error
     throw e;
   }
 }
 
-def SendEmailNotification() {
+def SendEmailNotification(String result) {
   
     // config 
     def to = emailextrecipients([
@@ -32,7 +32,7 @@ def SendEmailNotification() {
     ])
     
     // set variables
-    def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
+    def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} result"
     def content = '${JELLY_SCRIPT,template="html"}'
 
     // send email
