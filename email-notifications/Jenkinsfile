@@ -1,25 +1,5 @@
 node {
 
-  // config 
-  def to = emailextrecipients([
-         developers(),
-         requestor()
-  ])
-  
-  def SendEmailNotification() {
-    
-    // set variables
-    def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
-    def content = '${JELLY_SCRIPT,template="html"}'
-
-    // send email
-    if(to != null && !to.isEmpty()) {
-      emailext(body: content, mimeType: 'text/html',
-         subject: subject,
-         to: to, attachLog: true )
-    }
-  }
-
   // job
   try {
     stage('run unit test') {
@@ -44,3 +24,23 @@ node {
     throw e;
   }
 }
+
+def SendEmailNotification() {
+  
+    // config 
+    def to = emailextrecipients([
+           developers(),
+           requestor()
+    ])
+    
+    // set variables
+    def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
+    def content = '${JELLY_SCRIPT,template="html"}'
+
+    // send email
+    if(to != null && !to.isEmpty()) {
+      emailext(body: content, mimeType: 'text/html',
+         subject: subject,
+         to: to, attachLog: true )
+    }
+  }
