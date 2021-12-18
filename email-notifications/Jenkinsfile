@@ -9,8 +9,6 @@ node {
       println('Built Successfully')
     }
     stage('post-build') {
-      // mark build as successful
-      currentBuild.result = "SUCCESSFUL";
       
       SendEmailNotification()
     }
